@@ -1,15 +1,11 @@
 from django.db import models
 
 # Create your models here.
-class Cat():
-  def __init__(self, name, breed, description, age):
-    self.name = name
-    self.breed = breed
-    self.description = description
-    self.age = age
+class Cat(models.Model):
+  name = models.CharField(max_length=100)
+  breed = models.CharField(max_length=100)
+  description = models.TextField(max_length=250)
+  age = models.IntegerField()
 
-cats = [
-  Cat('Lolo', 'tabby', 'foul little demon', 3),
-  Cat('Jerry', 'tortoise shell', 'he is really chunky', 6),
-  Cat('Raven', 'black tripod', '3 legged cat', 4)
-]
+  def __str__(self):
+    return f"({self.id}) - {self.name}"

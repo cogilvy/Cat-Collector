@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import cats as cats
+from .models import Cat
 
 # Create your views here.
 def home(request):
@@ -9,4 +9,9 @@ def about(request):
   return render(request, 'about.html')
 
 def cats_index(request):
-  return render(request, 'cats/index.html', {'cats': cats})
+  cats = Cat.objects.order_by('name')
+  return render(request, 'cats/index.html', { 'cats': cats })
+
+def cats_detail(request, cat_id):
+  cat = Cat.objects.get(id=cat_id)
+  return render(request, 'cats/detail.html', { 'cat': cat })
