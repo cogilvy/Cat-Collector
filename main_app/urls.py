@@ -19,4 +19,7 @@ urlpatterns = [
 
   # 'cats/<int:pk>/delete/ - Cats Delete Route
   path('cats/<int:pk>/delete/', views.CatDelete.as_view(), name='cats_delete'),
+
+  # 'cats/<int:cat_id>/add_feeding/ - Add Feeding Route
+  path('cats/<int:cat_id>/add_feeding/', views.add_feeding, name='add_feeding'),
 ]
