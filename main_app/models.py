@@ -30,7 +30,7 @@ class Cat(models.Model):
     return self.name
 
   def get_absolute_url(self):
-    return reverse('detail', kwargs={'cat_id': self.id})
+    return reverse('cats_detail', kwargs={'cat_id': self.id})
 
   def fed_for_today(self):
     return self.feeding_set.filter(date=date.today()).count() >= len(MEALS)  
