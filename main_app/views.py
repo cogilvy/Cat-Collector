@@ -1,7 +1,10 @@
+import os
+import uuid
+import boto3
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-from .models import Cat, Toy
+from .models import Cat, Toy, Photo
 from .forms import FeedingForm
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
@@ -117,3 +120,39 @@ def signup(request):
   }
   return render(request, 'registration/signup.html', context)
   
+
+# def add_photo(request, cat_id):
+#   photo_file = request.FILES.get('photo-file', None)
+#   if photo_file:
+#     s3 = boto3.client('s3')
+#     # now we need to create a unique key used for the URL
+#     key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+#     try:
+#       bucket = os.environ['S3_BUCKET']
+#       s3.upload_fileobj(photo_file, bucket, key)
+#       # build out the full URL string
+#       url = f"{os.environ['S3_BASE_URL']}{bucket}/{key}"
+#       Photo.objects.create(url=url, cat_id=cat_id)
+#     except Exception as err:
+#       print('An error occured uploading a file to S3', err)
+#   return redirect('cats_detail', cat_id=cat_id)
+
+
+def add_photo(request, cat_id):
+    # photo-file will be the "name" attribute on the <input type="file">
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3')
+        # need a unique "key" for S3 / needs image file extension too
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        # just in case something goes wrong
+        try:
+            bucket = os.environ['S3_BUCKET']
+            s3.upload_fileobj(photo_file, bucket, key)
+            # build the full url string
+            url = f"{os.environ['S3_BASE_URL']}{bucket}/{key}"
+            # we can assign to cat_id or cat (if you have a cat object)
+            Photo.objects.create(url=url, cat_id=cat_id)
+        except:
+            print('An error occurred uploading file to S3')
+    return redirect('cats_detail', cat_id=cat_id)

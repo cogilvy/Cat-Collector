@@ -123,3 +123,7 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/cats/'
 
 LOGOUT_REDIRECT_URL = '/'
+
+import environ
+environ.Env()
+environ.Env.read_env()
