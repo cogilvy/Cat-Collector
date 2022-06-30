@@ -7,6 +7,8 @@ The Cat Collector is a fun application for keeping track of all of your cats! Yo
 - Python3
 - Django
 - Postgres
+- AWS S3
+- User authentication using Django's built in User model
 
 <img src="https://i.imgur.com/7hpQqOU.png">
 
